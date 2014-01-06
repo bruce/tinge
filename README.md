@@ -4,6 +4,8 @@ Extract color information from CSS/SCSS files (for various formats).
 
 ## Usage
 
+You can see usage information by running `tinge help`.
+
 Currently the only available operation is extracting color variable
 assignments from SCSS files and outputting them to various formats:
 
@@ -12,6 +14,9 @@ assignments from SCSS files and outputting them to various formats:
  * JSON
  * Ruby
  * YAML
+
+This command is executed as `tinge vars`, although since it's the
+default, `vars` can be omitted (as is in the examples below):
 
 As an example, using this simple SCSS file:
 
@@ -25,7 +30,7 @@ $orange: #fab444;
 We can get the final (resolved) SCSS:
 
 ```
-$ tinge vars colors.scss
+$ tinge colors.scss
 $gray: #262626;
 $orange: #fab444;
 $white: #ffffff;
@@ -34,7 +39,7 @@ $white: #ffffff;
 Convert it to a JSON object suitable for use in JavaScript:
 
 ```
-$ tinge vars -f json colors.scss
+$ tinge -f json colors.scss
 {"white":"#ffffff","gray":"#262626","orange":"#fab444"}
 ```
 
@@ -51,7 +56,7 @@ white: "#ffffff"
 We can also create an ASE file (note `--output`/`-o` is required):
 
 ```
-tinge vars -f ase colors.scss -o colors.ase
+tinge -f ase colors.scss -o colors.ase
 ```
 
 ## Contributing
