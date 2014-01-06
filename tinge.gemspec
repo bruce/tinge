@@ -18,7 +18,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "thor"
-  spec.add_dependency "sass", "3.3.0.rc.2"
+  spec.add_dependency "sass", "~> 3.3.0.rc.2"
+  spec.add_dependency "ase"
+  spec.add_dependency "multi_json"
 
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake"
