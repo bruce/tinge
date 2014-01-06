@@ -1,6 +1,6 @@
 # Tinge
 
-Extract color information into various formats from CSS/SCSS files.
+Extract color information from CSS/SCSS files (for various formats).
 
 ## Usage
 
