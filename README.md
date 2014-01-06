@@ -4,7 +4,55 @@ Extract color information from CSS/SCSS files (for various formats).
 
 ## Usage
 
-TODO
+Currently the only available operation is extracting color variable
+assignments from SCSS files and outputting them to various formats:
+
+ * ASE (Adobe Swatch Exchange)
+ * SCSS (but with all variable assignments and functions resolved)
+ * JSON
+ * Ruby
+ * YAML
+
+As an example, using this simple SCSS file:
+
+```
+$ cat colors.scss
+$white: white;
+$gray: darken($white, 85%);
+$orange: #fab444;
+```
+
+We can get the final (resolved) SCSS:
+
+```
+$ tinge vars colors.scss
+$gray: #262626;
+$orange: #fab444;
+$white: #ffffff;
+```
+
+Convert it to a JSON object suitable for use in JavaScript:
+
+```
+$ tinge vars -f json colors.scss
+{"white":"#ffffff","gray":"#262626","orange":"#fab444"}
+```
+
+Output it as YAML (and note `tinge` accepts stdin, too):
+
+```
+cat colors.scss | tinge vars -f yml
+---
+gray: "#262626"
+orange: "#fab444"
+white: "#ffffff"
+```
+
+We can also create an ASE file (note `--output`/`-o` is required):
+
+```
+tinge vars -f ase colors.scss -o colors.ase
+```
 
 ## Contributing
 
