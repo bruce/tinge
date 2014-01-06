@@ -6,27 +6,26 @@ module Tinge
 
     default_command :process
 
-    method_option :format, aliases: %w(-f), default: 'ruby'
+    method_option :reporter, aliases: %w(-r), default: 'variables', enum: Reporters.valid
+    method_option :format,   aliases: %w(-f), default: 'json', enum: Formatters.valid
+    method_option :output,   aliases: %w(-o), description: "Output to filename"
 
-    desc "process FILENAME_OR_STDIN", "Process text"
-    def process(filename = nil)
-      result = Parser.parse(read(filename))
-      case options['format']
-      when 'ruby'
-        p result
+    desc "process [FILENAME, ...]", "Process text"
+    def process(*filenames)
+      result = Parser.parse(read(filenames))
+      formatter = Formatters.find(options[:format])
+      if formatter.require_filename? && !options[:output]
+        abort "Must provide an output filename for format #{options[:format]}"
       end
-    end
-
-    desc "tree FILENAME_OR_STDIN", "Display the parse tree"
-    def tree(filename = nil)
-      pp Parser.new(read(filename)).document
+      reporter  = Reporters.find(options[:reporter])
+      formatter.new(reporter.new(result, formatter), options[:output]).render
     end
 
     private
 
-    def read(filename = nil)
-      if filename
-        File.read(filename)
+    def read(filenames = [])
+      if filenames.any?
+        filenames.map { |f| File.read(f) }.join("\n")
       else
         STDIN.read
       end

@@ -2,6 +2,14 @@ module Tinge
 
   class Parser
 
+    class Result < Hash
+
+      def vars
+        @vars ||= {}
+      end
+
+    end
+
     def self.parse(text)
       new(text).tap { |parser|
         parser.run
@@ -12,8 +20,20 @@ module Tinge
       @text = text
     end
 
+    def set_var(name, value)
+      result.vars[name] = value
+    end
+
     def document
-      @document ||= Sass::Engine.new(@text, syntax: :scss).to_tree
+      parse_document unless @document
+      @document
+    end
+
+    def parse_document
+      Sass::Tree::Visitors::Perform.tinge_parser = self
+      @engine = Sass::Engine.new(@text, syntax: :scss)
+      @document = @engine.to_tree
+      @engine.render
     end
 
     def run
@@ -21,7 +41,7 @@ module Tinge
     end
 
     def result
-      @result ||= {}
+      @result ||= Result.new
     end
 
     def visit(node, parent = nil)
