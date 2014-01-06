@@ -46,7 +46,7 @@ $ tinge -f json colors.scss
 Output it as YAML (and note `tinge` accepts stdin, too):
 
 ```
-cat colors.scss | tinge vars -f yml
+cat colors.scss | tinge -f yml
 ---
 gray: "#262626"
 orange: "#fab444"
